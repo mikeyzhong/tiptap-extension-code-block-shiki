@@ -1,8 +1,8 @@
-import { BundledLanguage, BundledTheme } from 'shiki'
 import { findChildren } from '@tiptap/core'
+import { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import { Node as ProsemirrorNode } from '@tiptap/pm/model'
+import { BundledLanguage, BundledTheme } from 'shiki'
 import {
   getShiki,
   initHighlighter,
@@ -57,6 +57,8 @@ function getDecorations({
     })
 
     for (const line of tokens) {
+      const lineStart = from
+      const shouldHighlight = (line as any)?.meta?.highlight
       for (const token of line) {
         const to = from + token.content.length
 
@@ -67,6 +69,14 @@ function getDecorations({
         decorations.push(decoration)
 
         from = to
+      }
+
+      if (shouldHighlight) {
+        decorations.push(
+          Decoration.inline(lineStart, from, {
+            class: 'shiki-line--highlight',
+          }),
+        )
       }
 
       from += 1

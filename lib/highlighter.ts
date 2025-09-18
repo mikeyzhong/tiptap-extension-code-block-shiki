@@ -6,6 +6,7 @@ import {
   bundledLanguages,
   bundledThemes,
 } from 'shiki'
+import { transformerNotationHighlight } from '@shikijs/transformers'
 import { findChildren } from '@tiptap/core'
 import { Node as ProsemirrorNode } from '@tiptap/pm/model'
 
@@ -41,7 +42,11 @@ export function loadHighlighter(opts: HighlighterOptions) {
     const langs = opts.languages.filter(
       (lang): lang is BundledLanguage => !!lang && lang in bundledLanguages,
     )
-    highlighterPromise = createHighlighter({ themes, langs }).then((h) => {
+    highlighterPromise = createHighlighter({
+      themes,
+      langs,
+      transformers: [transformerNotationHighlight()],
+    }).then((h) => {
       highlighter = h
     })
     return highlighterPromise
