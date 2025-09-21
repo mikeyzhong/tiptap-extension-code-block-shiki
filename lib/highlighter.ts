@@ -1,14 +1,13 @@
-import {
-  createHighlighter,
-  Highlighter,
-  BundledLanguage,
-  BundledTheme,
-  bundledLanguages,
-  bundledThemes,
-} from 'shiki'
-import { transformerNotationHighlight } from '@shikijs/transformers'
 import { findChildren } from '@tiptap/core'
 import { Node as ProsemirrorNode } from '@tiptap/pm/model'
+import {
+  BundledLanguage,
+  bundledLanguages,
+  BundledTheme,
+  bundledThemes,
+  createHighlighter,
+  Highlighter,
+} from 'shiki'
 
 let highlighter: Highlighter | undefined
 let highlighterPromise: Promise<void> | undefined
@@ -45,7 +44,6 @@ export function loadHighlighter(opts: HighlighterOptions) {
     highlighterPromise = createHighlighter({
       themes,
       langs,
-      transformers: [transformerNotationHighlight()],
     }).then((h) => {
       highlighter = h
     })
