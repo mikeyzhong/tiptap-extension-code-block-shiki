@@ -1,7 +1,9 @@
 import { findChildren } from '@tiptap/core'
 import { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
+import type { DecorationAttrs } from '@tiptap/pm/view'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
+import type { Element } from 'hast'
 import { BundledLanguage, BundledTheme } from 'shiki'
 import {
   getShiki,
@@ -22,12 +24,8 @@ function getDecorations({
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
 }) {
-  const decorations: Decoration[] = []
-
-  const codeBlocks = findChildren(doc, (node) => node.type.name === name)
-
-  codeBlocks.forEach((block) => {
-    let from = block.pos + 1
+  let decorations: Decoration[] = []
+  findChildren(doc, (node) => node.type.name === name).forEach((block) => {
     let language = block.node.attrs.language || defaultLanguage
     let theme = block.node.attrs.theme || defaultTheme
 
@@ -45,43 +43,46 @@ function getDecorations({
 
     const themeResolved = highlighter.getTheme(themeToApply)
 
+    const preNode = highlighter!.codeToHast(block.node.textContent, {
+      theme: themeResolved,
+      lang: block.node.attrs.language,
+    }).children[0] as Element
+
     decorations.push(
       Decoration.node(block.pos, block.pos + block.node.nodeSize, {
-        style: `background-color: ${themeResolved.bg}`,
-      }),
+        class: `${preNode.properties?.class} node-editor__code-block-shiki`,
+        style: preNode.properties?.style,
+      } as DecorationAttrs),
     )
 
-    const tokens = highlighter.codeToTokensBase(block.node.textContent, {
-      lang: language,
-      theme: themeToApply,
-    })
-
-    for (const line of tokens) {
-      const lineStart = from
-      const shouldHighlight = (line as any)?.meta?.highlight
-      for (const token of line) {
-        const to = from + token.content.length
-
-        const decoration = Decoration.inline(from, to, {
-          style: `color: ${token.color}`,
+    let from = block.pos + 1
+    const lines = (preNode.children[0] as Element).children
+    for (const line of lines) {
+      if ((line as Element).children?.length) {
+        let lineFrom = from
+        // @ts-expect-error line type
+        line.children?.forEach((node) => {
+          const nodeLen = node.children[0].value.length
+          decorations.push(
+            Decoration.inline(
+              lineFrom,
+              lineFrom + nodeLen,
+              (node as Element).properties as DecorationAttrs,
+            ),
+          )
+          lineFrom += nodeLen
         })
 
-        decorations.push(decoration)
-
-        from = to
+        // prosemirror do not support add wrap for line
+        // decorations.push(Decoration.inline(from, lineFrom, line.properties as DecorationAttrs))
+        from = lineFrom
+      } else if (line.type === 'text') {
+        from += line.value.length
       }
-
-      if (shouldHighlight) {
-        decorations.push(
-          Decoration.inline(lineStart, from, {
-            class: 'shiki-line--highlight',
-          }),
-        )
-      }
-
-      from += 1
     }
   })
+
+  decorations = decorations.filter((item) => !!item)
 
   return DecorationSet.create(doc, decorations)
 }
