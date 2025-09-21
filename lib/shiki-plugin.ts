@@ -1,3 +1,4 @@
+import { transformerNotationHighlight } from '@shikijs/transformers'
 import { findChildren } from '@tiptap/core'
 import { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
@@ -46,6 +47,7 @@ function getDecorations({
     const preNode = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
       lang: block.node.attrs.language,
+      transformers: [transformerNotationHighlight()],
     }).children[0] as Element
 
     decorations.push(
