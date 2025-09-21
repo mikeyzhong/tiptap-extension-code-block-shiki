@@ -92,6 +92,8 @@ function getDecorations({
 
   decorations = decorations.filter((item) => !!item)
 
+  console.log('DecorationSet.create', DecorationSet.create(doc, decorations))
+
   return DecorationSet.create(doc, decorations)
 }
 
