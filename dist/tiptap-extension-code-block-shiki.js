@@ -1686,7 +1686,9 @@ function de({
     const l = _n();
     if (!l) return;
     l.getLoadedLanguages().includes(a) || (a = "plaintext");
-    const d = l.getLoadedThemes().includes(c) ? c : l.getLoadedThemes()[0], u = l.getTheme(d), f = l.codeToHast(i.node.textContent, {
+    const d = l.getLoadedThemes().includes(c) ? c : l.getLoadedThemes()[0], u = l.getTheme(d);
+    console.log("block.node.textContent", i.node.textContent);
+    const f = l.codeToHast(i.node.textContent, {
       theme: u,
       lang: i.node.attrs.language,
       transformers: [Dn()]
