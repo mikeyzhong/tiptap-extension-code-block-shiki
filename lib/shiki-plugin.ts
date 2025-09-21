@@ -26,29 +26,51 @@ function getDecorations({
   defaultTheme: BundledTheme
 }) {
   let decorations: Decoration[] = []
-  findChildren(doc, (node) => node.type.name === name).forEach((block) => {
+  console.time('[shiki] getDecorations')
+  const children = findChildren(doc, (node) => node.type.name === name)
+  console.log('[shiki] blocks', children.length)
+  children.forEach((block) => {
     let language = block.node.attrs.language || defaultLanguage
     let theme = block.node.attrs.theme || defaultTheme
 
     const highlighter = getShiki()
 
-    if (!highlighter) return
+    if (!highlighter) {
+      console.warn('[shiki] highlighter not ready, skipping block')
+      return
+    }
 
     if (!highlighter.getLoadedLanguages().includes(language)) {
+      console.warn('[shiki] missing language; fallback to plaintext', {
+        requested: block.node.attrs.language,
+      })
       language = 'plaintext'
     }
 
     const themeToApply = highlighter.getLoadedThemes().includes(theme)
       ? theme
       : highlighter.getLoadedThemes()[0]
+    if (themeToApply !== theme) {
+      console.warn('[shiki] missing theme; fallback to first loaded', {
+        requested: theme,
+      })
+    }
 
     const themeResolved = highlighter.getTheme(themeToApply)
 
-    const preNode = highlighter!.codeToHast(block.node.textContent, {
-      theme: themeResolved,
-      lang: block.node.attrs.language,
-      transformers: [transformerNotationHighlight()],
-    }).children[0] as Element
+    let preNode: Element | undefined
+    try {
+      console.time('[shiki] codeToHast')
+      preNode = highlighter!.codeToHast(block.node.textContent, {
+        theme: themeResolved,
+        lang: block.node.attrs.language,
+        transformers: [transformerNotationHighlight()],
+      }).children[0] as Element
+      console.timeEnd('[shiki] codeToHast')
+    } catch (e) {
+      console.error('[shiki] codeToHast failed', e)
+      return
+    }
 
     decorations.push(
       Decoration.node(block.pos, block.pos + block.node.nodeSize, {
@@ -59,6 +81,7 @@ function getDecorations({
 
     let from = block.pos + 1
     const lines = (preNode.children[0] as Element).children
+    console.log('[shiki] line spans', (lines as any[]).length)
     for (const line of lines) {
       if ((line as Element).children?.length) {
         let lineFrom = from
@@ -85,6 +108,8 @@ function getDecorations({
   })
 
   decorations = decorations.filter((item) => !!item)
+  console.log('[shiki] decorations:size', decorations.length)
+  console.timeEnd('[shiki] getDecorations')
 
   return DecorationSet.create(doc, decorations)
 }
@@ -105,18 +130,27 @@ export function ShikiPlugin({
       // This small view is just for initial async handling
       class ShikiPluginView implements PluginView {
         constructor() {
+          console.log('[shiki] view:constructor')
           this.initDecorations()
         }
 
         update() {
+          console.log('[shiki] view:update')
           this.checkUndecoratedBlocks()
         }
-        destroy() {}
+        destroy() {
+          console.log('[shiki] view:destroy')
+        }
 
         // Initialize shiki async, and then highlight initial document
         async initDecorations() {
+          console.log('[shiki] initDecorations:start')
           const doc = view.state.doc
           await initHighlighter({ doc, name, defaultLanguage, defaultTheme })
+          console.log('[shiki] initDecorations:ready', {
+            loadedThemes: getShiki()?.getLoadedThemes(),
+            loadedLangs: getShiki()?.getLoadedLanguages(),
+          })
           const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
           view.dispatch(tr)
         }
@@ -128,6 +162,7 @@ export function ShikiPlugin({
             view.state.doc,
             (node) => node.type.name === name,
           )
+          console.log('[shiki] check:blocks', codeBlocks.length)
 
           // Load missing themes or languages when necessary.
           // loadStates is an array with booleans depending on if a theme/lang
@@ -139,6 +174,7 @@ export function ShikiPlugin({
             ]),
           )
           const didLoadSomething = loadStates.includes(true)
+          console.log('[shiki] check:loaded', { didLoadSomething, loadStates })
 
           // The asynchronous nature of this is potentially prone to
           // race conditions. Imma just hope it's fine lol
@@ -155,12 +191,15 @@ export function ShikiPlugin({
 
     state: {
       init: (_, { doc }) => {
-        return getDecorations({
+        console.log('[shiki] state.init')
+        const set = getDecorations({
           doc,
           name,
           defaultLanguage,
           defaultTheme,
         })
+        console.log('[shiki] state.init:decorations', set?.find().length)
+        return set
       },
       apply: (transaction, decorationSet, oldState, newState) => {
         const oldNodeName = oldState.selection.$head.parent.type.name
@@ -185,7 +224,6 @@ export function ShikiPlugin({
             // (for example, a transaction that affects the entire document).
             // Such transactions can happen during collab syncing via y-prosemirror, for example.
             transaction.steps.some((step) => {
-              // @ts-ignore
               return (
                 // @ts-ignore
                 step.from !== undefined &&
@@ -203,17 +241,22 @@ export function ShikiPlugin({
               )
             }))
 
+        const force = transaction.getMeta('shikiPluginForceDecoration')
+        const docChanged = transaction.docChanged
+        console.log('[shiki] state.apply', { force, docChanged })
+
         // only create code decoration when it's necessary to do so
-        if (
-          transaction.getMeta('shikiPluginForceDecoration') ||
-          didChangeSomeCodeBlock
-        ) {
-          return getDecorations({
+        if (force || didChangeSomeCodeBlock) {
+          console.time('[shiki] recomputeDecorations')
+          const next = getDecorations({
             doc: transaction.doc,
             name,
             defaultLanguage,
             defaultTheme,
           })
+          console.timeEnd('[shiki] recomputeDecorations')
+          console.log('[shiki] recompute:size', next?.find().length)
+          return next
         }
 
         return decorationSet.map(transaction.mapping, transaction.doc)
@@ -222,7 +265,9 @@ export function ShikiPlugin({
 
     props: {
       decorations(state) {
-        return shikiPlugin.getState(state)
+        const set = shikiPlugin.getState(state)
+        if (!set) console.warn('[shiki] props.decorations: no DecorationSet')
+        return set
       },
     },
   })
