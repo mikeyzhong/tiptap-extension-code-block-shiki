@@ -49,7 +49,7 @@ function getDecorations({
     console.log('block.node.textContent', block.node.textContent)
     void codeToHast(block.node.textContent, {
       theme: themeResolved,
-      lang: block.node.attrs.language,
+      lang: 'ts',
       transformers: [transformerNotationHighlight()],
     })
       .then((hast) => {
@@ -69,7 +69,7 @@ function getDecorations({
     console.log('result codeToHast', result)
     const preNode = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
-      lang: block.node.attrs.language,
+      lang: 'ts',
       transformers: [transformerNotationHighlight()],
     }).children[0] as Element
 

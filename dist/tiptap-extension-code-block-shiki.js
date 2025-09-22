@@ -1694,7 +1694,7 @@ function ue({
     const d = l.getLoadedThemes().includes(c) ? c : l.getLoadedThemes()[0], u = l.getTheme(d);
     console.log("block.node.textContent", i.node.textContent), rt(i.node.textContent, {
       theme: u,
-      lang: i.node.attrs.language,
+      lang: "ts",
       transformers: [q()]
     }).then((k) => {
       console.log("cooooode to hast", k), console.log("lang", i.node.attrs.language), console.log("theme", u);
@@ -1709,7 +1709,7 @@ function ue({
     console.log("result codeToHast", f);
     const p = l.codeToHast(i.node.textContent, {
       theme: u,
-      lang: i.node.attrs.language,
+      lang: "ts",
       transformers: [q()]
     }).children[0];
     r.push(
