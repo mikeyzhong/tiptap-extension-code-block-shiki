@@ -1693,8 +1693,8 @@ function ue({
     l.getLoadedLanguages().includes(a) || (a = "plaintext");
     const d = l.getLoadedThemes().includes(c) ? c : l.getLoadedThemes()[0], u = l.getTheme(d);
     console.log("block.node.textContent", i.node.textContent), rt(i.node.textContent, {
-      theme: u,
-      lang: "ts",
+      theme: "github-light",
+      lang: "javascript",
       transformers: [q()]
     }).then((k) => {
       console.log("cooooode to hast", k), console.log("lang", i.node.attrs.language), console.log("theme", u);
