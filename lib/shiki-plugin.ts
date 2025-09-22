@@ -69,7 +69,7 @@ function getDecorations({
     console.log('result codeToHast', result)
     const preNode = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
-      lang: 'ts',
+      lang: block.node.attrs.language,
       transformers: [transformerNotationHighlight()],
     }).children[0] as Element
 

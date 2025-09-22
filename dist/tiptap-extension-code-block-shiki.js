@@ -1709,7 +1709,7 @@ function ue({
     console.log("result codeToHast", f);
     const p = l.codeToHast(i.node.textContent, {
       theme: u,
-      lang: "ts",
+      lang: i.node.attrs.language,
       transformers: [q()]
     }).children[0];
     r.push(
