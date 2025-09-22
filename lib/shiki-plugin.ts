@@ -48,8 +48,8 @@ function getDecorations({
 
     console.log('block.node.textContent', block.node.textContent)
     void codeToHast(block.node.textContent, {
-      theme: themeResolved,
-      lang: 'ts',
+      theme: 'github-light',
+      lang: 'javascript',
       transformers: [transformerNotationHighlight()],
     })
       .then((hast) => {
