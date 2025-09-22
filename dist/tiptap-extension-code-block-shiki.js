@@ -1665,7 +1665,14 @@ async function Wn({
     n
   ], i = [
     ...r.map((a) => a.node.attrs.language),
-    o
+    o,
+    "python",
+    "ts",
+    "typescript",
+    "javascript",
+    "json",
+    "css",
+    "html"
   ];
   if (console.log("initHighlighter codeBlocks", r), console.log("initHighlighter themes", s), console.log("initHighlighter languages", i), T)
     console.log("mapping"), await Promise.all([
@@ -1694,7 +1701,7 @@ function ue({
     const d = l.getLoadedThemes().includes(c) ? c : l.getLoadedThemes()[0], u = l.getTheme(d);
     console.log("block.node.textContent", i.node.textContent), rt(i.node.textContent, {
       theme: "github-light",
-      lang: "javascript",
+      lang: "ts",
       transformers: [q()]
     }).then((k) => {
       console.log("cooooode to hast", k), console.log("lang", i.node.attrs.language), console.log("theme", u);

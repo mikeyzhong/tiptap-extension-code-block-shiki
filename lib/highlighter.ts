@@ -120,7 +120,14 @@ export async function initHighlighter({
   const languages = [
     ...codeBlocks.map((block) => block.node.attrs.language as BundledLanguage),
     defaultLanguage,
-  ]
+    'python',
+    'ts',
+    'typescript',
+    'javascript',
+    'json',
+    'css',
+    'html',
+  ] as BundledLanguage[]
   console.log('initHighlighter codeBlocks', codeBlocks)
   console.log('initHighlighter themes', themes)
   console.log('initHighlighter languages', languages)

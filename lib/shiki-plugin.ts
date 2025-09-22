@@ -49,7 +49,7 @@ function getDecorations({
     console.log('block.node.textContent', block.node.textContent)
     void codeToHast(block.node.textContent, {
       theme: 'github-light',
-      lang: 'javascript',
+      lang: 'ts',
       transformers: [transformerNotationHighlight()],
     })
       .then((hast) => {
