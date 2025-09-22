@@ -91,10 +91,10 @@ class st {
     return a;
   }
 }
-function b(e, t, n) {
-  return e.config[t] === void 0 && e.parent ? b(e.parent, t, n) : typeof e.config[t] == "function" ? e.config[t].bind({
+function C(e, t, n) {
+  return e.config[t] === void 0 && e.parent ? C(e.parent, t, n) : typeof e.config[t] == "function" ? e.config[t].bind({
     ...n,
-    parent: e.parent ? b(e.parent, t, n) : null
+    parent: e.parent ? C(e.parent, t, n) : null
   }) : e.config[t];
 }
 function it(e) {
@@ -172,9 +172,9 @@ class A {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(b(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
       name: this.name
-    }))), this.storage = E(b(this, "addStorage", {
+    }))), this.storage = E(C(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
@@ -191,9 +191,9 @@ class A {
   }
   extend(t = {}) {
     const n = new A({ ...this.config, ...t });
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(b(n, "addOptions", {
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
       name: n.name
-    })), n.storage = E(b(n, "addStorage", {
+    })), n.storage = E(C(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -299,7 +299,7 @@ const mt = () => ({ editor: e, view: t }) => (requestAnimationFrame(() => {
 }, Mt = (e) => ({ tr: t, dispatch: n }) => {
   const { from: o, to: r } = e;
   return n && t.delete(o, r), !0;
-}, Ct = () => ({ state: e, dispatch: t }) => Ye(e, t), bt = () => ({ commands: e }) => e.keyboardShortcut("Enter"), vt = () => ({ state: e, dispatch: t }) => Xe(e, t);
+}, bt = () => ({ state: e, dispatch: t }) => Ye(e, t), Ct = () => ({ commands: e }) => e.keyboardShortcut("Enter"), vt = () => ({ state: e, dispatch: t }) => Xe(e, t);
 function K(e, t, n = { strict: !0 }) {
   const o = Object.keys(t);
   return o.length ? o.every((r) => n.strict ? t[r] === e[r] : lt(t[r]) ? t[r].test(e[r]) : t[r] === e[r]) : !0;
@@ -618,7 +618,7 @@ const Jt = (e, t = {}) => ({ state: n, dispatch: o }) => {
   const o = x(e, t.schema);
   return nt(o)(t, n);
 }, qt = () => ({ state: e, dispatch: t }) => He(e, t);
-function Ce(e, t) {
+function be(e, t) {
   return t.nodes[e] ? "node" : t.marks[e] ? "mark" : null;
 }
 function se(e, t) {
@@ -627,7 +627,7 @@ function se(e, t) {
 }
 const Qt = (e, t) => ({ tr: n, state: o, dispatch: r }) => {
   let s = null, i = null;
-  const a = Ce(typeof e == "string" ? e : e.name, o.schema);
+  const a = be(typeof e == "string" ? e : e.name, o.schema);
   return a ? (a === "node" && (s = x(e, o.schema)), a === "mark" && (i = P(e, o.schema)), r && n.selection.ranges.forEach((c) => {
     o.doc.nodesBetween(c.$from.pos, c.$to.pos, (l, d) => {
       s && s === l.type && n.setNodeMarkup(d, void 0, se(l.attrs, t)), i && l.marks.length && l.marks.forEach((u) => {
@@ -740,10 +740,10 @@ function ie(e, t) {
     name: o.name,
     options: o.options,
     storage: o.storage
-  }, s = E(b(o, "group", r));
+  }, s = E(C(o, "group", r));
   return typeof s != "string" ? !1 : s.split(" ").includes("list");
 }
-function be(e, { checkChildren: t = !0, ignoreWhitespace: n = !1 } = {}) {
+function Ce(e, { checkChildren: t = !0, ignoreWhitespace: n = !1 } = {}) {
   var o;
   if (n) {
     if (e.type.name === "hardBreak")
@@ -760,7 +760,7 @@ function be(e, { checkChildren: t = !0, ignoreWhitespace: n = !1 } = {}) {
   if (t) {
     let r = !0;
     return e.content.forEach((s) => {
-      r !== !1 && (be(s, { ignoreWhitespace: n, checkChildren: t }) || (r = !1));
+      r !== !1 && (Ce(s, { ignoreWhitespace: n, checkChildren: t }) || (r = !1));
     }), r;
   }
   return !1;
@@ -885,10 +885,10 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
         ...t
       }, S = ((i = a.contentMatch.defaultType) === null || i === void 0 ? void 0 : i.createAndFill(k)) || void 0;
       y = y.append(L.from(a.createAndFill(null, S) || void 0));
-      const C = c.before(c.depth - (w - 1));
-      n.replace(C, c.after(-M), new $e(y, 4 - w, 0));
+      const b = c.before(c.depth - (w - 1));
+      n.replace(b, c.after(-M), new $e(y, 4 - w, 0));
       let O = -1;
-      n.doc.nodesBetween(C, n.doc.content.size, (N, Ae) => {
+      n.doc.nodesBetween(b, n.doc.content.size, (N, Ae) => {
         if (O > -1)
           return !1;
         N.isTextblock && N.content.size === 0 && (O = Ae + 1);
@@ -914,7 +914,7 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
     const { selection: y, storedMarks: w } = o, { splittableMarks: M } = s.extensionManager, k = w || y.$to.parentOffset && y.$from.marks();
     if (n.split(c.pos, 2, h).scrollIntoView(), !k || !r)
       return !0;
-    const S = k.filter((C) => M.includes(C.type.name));
+    const S = k.filter((b) => M.includes(b.type.name));
     n.ensureMarks(S);
   }
   return !0;
@@ -940,7 +940,7 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
   const { extensions: u, splittableMarks: f } = r.extensionManager, p = x(e, i.schema), g = x(t, i.schema), { selection: m, storedMarks: h } = i, { $from: y, $to: w } = m, M = y.blockRange(w), k = h || m.$to.parentOffset && m.$from.marks();
   if (!M)
     return !1;
-  const S = te((C) => ie(C.type.name, u))(m);
+  const S = te((b) => ie(b.type.name, u))(m);
   if (M.depth >= 1 && S && M.depth - S.depth <= 1) {
     if (S.node.type === p)
       return l.liftListItem(g);
@@ -948,8 +948,8 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
       return c().command(() => (s.setNodeMarkup(S.pos, p), !0)).command(() => U(s, p)).command(() => G(s, p)).run();
   }
   return !n || !k || !a ? c().command(() => d().wrapInList(p, o) ? !0 : l.clearNodes()).wrapInList(p, o).command(() => U(s, p)).command(() => G(s, p)).run() : c().command(() => {
-    const C = d().wrapInList(p, o), O = k.filter((N) => f.includes(N.type.name));
-    return s.ensureMarks(O), C ? !0 : l.clearNodes();
+    const b = d().wrapInList(p, o), O = k.filter((N) => f.includes(N.type.name));
+    return s.ensureMarks(O), b ? !0 : l.clearNodes();
   }).wrapInList(p, o).command(() => U(s, p)).command(() => G(s, p)).run();
 }, Sn = (e, t = {}, n = {}) => ({ state: o, commands: r }) => {
   const { extendEmptyMarkRange: s = !1 } = n, i = P(e, o.schema);
@@ -958,10 +958,10 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
   const s = x(e, o.schema), i = x(t, o.schema), a = ee(o, s, n);
   let c;
   return o.selection.$anchor.sameParent(o.selection.$head) && (c = o.selection.$anchor.parent.attrs), a ? r.setNode(i, c) : r.setNode(s, { ...c, ...n });
-}, Cn = (e, t = {}) => ({ state: n, commands: o }) => {
+}, bn = (e, t = {}) => ({ state: n, commands: o }) => {
   const r = x(e, n.schema);
   return ee(n, r, t) ? o.lift(r) : o.wrapIn(r, t);
-}, bn = () => ({ state: e, dispatch: t }) => {
+}, Cn = () => ({ state: e, dispatch: t }) => {
   const n = e.plugins;
   for (let o = 0; o < n.length; o += 1) {
     const r = n[o];
@@ -1002,7 +1002,7 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
   return n.removeStoredMark(c), !0;
 }, An = (e, t = {}) => ({ tr: n, state: o, dispatch: r }) => {
   let s = null, i = null;
-  const a = Ce(typeof e == "string" ? e : e.name, o.schema);
+  const a = be(typeof e == "string" ? e : e.name, o.schema);
   return a ? (a === "node" && (s = x(e, o.schema)), a === "mark" && (i = P(e, o.schema)), r && n.selection.ranges.forEach((c) => {
     const l = c.$from.pos, d = c.$to.pos;
     let u, f, p, g;
@@ -1049,8 +1049,8 @@ var $n = /* @__PURE__ */ Object.freeze({
   deleteCurrentNode: wt,
   deleteNode: St,
   deleteRange: Mt,
-  deleteSelection: Ct,
-  enter: bt,
+  deleteSelection: bt,
+  enter: Ct,
   exitCode: vt,
   extendMarkRange: Tt,
   first: At,
@@ -1091,8 +1091,8 @@ var $n = /* @__PURE__ */ Object.freeze({
   toggleList: wn,
   toggleMark: Sn,
   toggleNode: Mn,
-  toggleWrap: Cn,
-  undoInputRule: bn,
+  toggleWrap: bn,
+  undoInputRule: Cn,
   unsetAllMarks: vn,
   unsetMark: Tn,
   updateAttributes: An,
@@ -1229,7 +1229,7 @@ A.create({
           if (!o || r)
             return;
           const { empty: s, from: i, to: a } = t.selection, c = j.atStart(t.doc).from, l = j.atEnd(t.doc).to;
-          if (s || !(i === c && a === l) || !be(n.doc))
+          if (s || !(i === c && a === l) || !Ce(n.doc))
             return;
           const f = n.tr, p = ye({
             state: n,
@@ -1296,9 +1296,9 @@ class V {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(b(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
       name: this.name
-    }))), this.storage = E(b(this, "addStorage", {
+    }))), this.storage = E(C(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
@@ -1315,9 +1315,9 @@ class V {
   }
   extend(t = {}) {
     const n = new V(t);
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(b(n, "addOptions", {
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
       name: n.name
-    })), n.storage = E(b(n, "addStorage", {
+    })), n.storage = E(C(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -1709,7 +1709,7 @@ function ue({
     console.log("result codeToHast", f);
     const p = l.codeToHast(i.node.textContent, {
       theme: u,
-      lang: i.node.attrs.language,
+      lang: "javascript",
       transformers: [q()]
     }).children[0];
     r.push(
@@ -1724,13 +1724,13 @@ function ue({
     for (const k of m)
       if ((w = k.children) != null && w.length) {
         let S = g;
-        (M = k.children) == null || M.forEach((C) => {
-          const O = C.children[0].value.length;
+        (M = k.children) == null || M.forEach((b) => {
+          const O = b.children[0].value.length;
           r.push(
             ne.inline(
               S,
               S + O,
-              C.properties
+              b.properties
             )
           ), S += O;
         }), g = S;
