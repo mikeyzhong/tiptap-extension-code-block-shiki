@@ -47,14 +47,17 @@ function getDecorations({
     const themeResolved = highlighter.getTheme(themeToApply)
 
     console.log('block.node.textContent', block.node.textContent)
-    console.log(
-      'cooooode to hast',
-      codeToHast(block.node.textContent, {
-        theme: themeResolved,
-        lang: block.node.attrs.language,
-        transformers: [transformerNotationHighlight()],
-      }),
-    )
+    void codeToHast(block.node.textContent, {
+      theme: themeResolved,
+      lang: block.node.attrs.language,
+      transformers: [transformerNotationHighlight()],
+    })
+      .then((hast) => {
+        console.log('cooooode to hast', hast)
+      })
+      .catch((e) => {
+        console.error('cooooode to hast error', e)
+      })
     console.log('bagel')
     const result = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
