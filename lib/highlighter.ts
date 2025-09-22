@@ -41,11 +41,13 @@ export function loadHighlighter(opts: HighlighterOptions) {
     const langs = opts.languages.filter(
       (lang): lang is BundledLanguage => !!lang && lang in bundledLanguages,
     )
+    console.log('loadHighlighter langs', langs)
     highlighterPromise = createHighlighter({
       themes,
       langs,
     }).then((h) => {
       highlighter = h
+      console.log('loadHighlighter highlighter', highlighter)
     })
     return highlighterPromise
   }
@@ -111,7 +113,6 @@ export async function initHighlighter({
   defaultTheme: BundledTheme
 }) {
   const codeBlocks = findChildren(doc, (node) => node.type.name === name)
-
   const themes = [
     ...codeBlocks.map((block) => block.node.attrs.theme as BundledTheme),
     defaultTheme,
@@ -120,11 +121,16 @@ export async function initHighlighter({
     ...codeBlocks.map((block) => block.node.attrs.language as BundledLanguage),
     defaultLanguage,
   ]
+  console.log('initHighlighter codeBlocks', codeBlocks)
+  console.log('initHighlighter themes', themes)
+  console.log('initHighlighter languages', languages)
 
   if (!highlighter) {
     const loader = loadHighlighter({ languages, themes })
+    console.log('initHighlighter loader', loader)
     await loader
   } else {
+    console.log('mapping')
     await Promise.all([
       ...themes.flatMap((theme) => loadTheme(theme)),
       ...languages.flatMap((language) => !!language && loadLanguage(language)),

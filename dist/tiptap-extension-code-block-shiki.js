@@ -141,7 +141,7 @@ function it(...e) {
 function at(e) {
   return typeof e == "function";
 }
-function A(e, t = void 0, ...n) {
+function E(e, t = void 0, ...n) {
   return at(e) ? t ? e.bind(t)(...n) : e(...n) : e;
 }
 function ct(e) {
@@ -164,7 +164,7 @@ function X(e, t) {
     _(t[r]) && _(e[r]) ? n[r] = X(e[r], t[r]) : n[r] = t[r];
   }), n;
 }
-class T {
+class A {
   constructor(t = {}) {
     this.type = "extension", this.name = "extension", this.parent = null, this.child = null, this.config = {
       name: this.name,
@@ -172,15 +172,15 @@ class T {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = A(C(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
       name: this.name
-    }))), this.storage = A(C(this, "addStorage", {
+    }))), this.storage = E(C(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
   }
   static create(t = {}) {
-    return new T(t);
+    return new A(t);
   }
   configure(t = {}) {
     const n = this.extend({
@@ -190,10 +190,10 @@ class T {
     return n.name = this.name, n.parent = this.parent, n;
   }
   extend(t = {}) {
-    const n = new T({ ...this.config, ...t });
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = A(C(n, "addOptions", {
+    const n = new A({ ...this.config, ...t });
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
       name: n.name
-    })), n.storage = A(C(n, "addStorage", {
+    })), n.storage = E(C(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -222,7 +222,7 @@ function ut(e, t, n) {
 function ft(e) {
   return Object.fromEntries(Object.entries(e.nodes).filter(([, t]) => t.spec.toText).map(([t, n]) => [t, n.spec.toText]));
 }
-T.create({
+A.create({
   name: "clipboardTextSerializer",
   addOptions() {
     return {
@@ -740,7 +740,7 @@ function se(e, t) {
     name: r.name,
     options: r.options,
     storage: r.storage
-  }, s = A(C(r, "group", o));
+  }, s = E(C(r, "group", o));
   return typeof s != "string" ? !1 : s.split(" ").includes("list");
 }
 function Ce(e, { checkChildren: t = !0, ignoreWhitespace: n = !1 } = {}) {
@@ -1099,7 +1099,7 @@ var On = /* @__PURE__ */ Object.freeze({
   wrapIn: An,
   wrapInList: En
 });
-T.create({
+A.create({
   name: "commands",
   addCommands() {
     return {
@@ -1107,7 +1107,7 @@ T.create({
     };
   }
 });
-T.create({
+A.create({
   name: "drop",
   addProseMirrorPlugins() {
     return [
@@ -1127,7 +1127,7 @@ T.create({
     ];
   }
 });
-T.create({
+A.create({
   name: "editable",
   addProseMirrorPlugins() {
     return [
@@ -1141,7 +1141,7 @@ T.create({
   }
 });
 const $n = new I("focusEvents");
-T.create({
+A.create({
   name: "focusEvents",
   addProseMirrorPlugins() {
     const { editor: e } = this;
@@ -1166,7 +1166,7 @@ T.create({
     ];
   }
 });
-T.create({
+A.create({
   name: "keymap",
   addKeyboardShortcuts() {
     const e = () => this.editor.commands.first(({ commands: i }) => [
@@ -1245,7 +1245,7 @@ T.create({
     ];
   }
 });
-T.create({
+A.create({
   name: "paste",
   addProseMirrorPlugins() {
     return [
@@ -1264,7 +1264,7 @@ T.create({
     ];
   }
 });
-T.create({
+A.create({
   name: "tabindex",
   addProseMirrorPlugins() {
     return [
@@ -1281,7 +1281,7 @@ function ae(e) {
   return new lt({
     find: e.find,
     handler: ({ state: t, range: n, match: r }) => {
-      const o = t.doc.resolve(n.from), s = A(e.getAttributes, void 0, r) || {};
+      const o = t.doc.resolve(n.from), s = E(e.getAttributes, void 0, r) || {};
       if (!o.node(-1).canReplaceWith(o.index(-1), o.indexAfter(-1), e.type))
         return null;
       t.tr.delete(n.from, n.to).setBlockType(n.from, n.from, e.type, s);
@@ -1296,9 +1296,9 @@ class V {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = A(C(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
       name: this.name
-    }))), this.storage = A(C(this, "addStorage", {
+    }))), this.storage = E(C(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
@@ -1315,9 +1315,9 @@ class V {
   }
   extend(t = {}) {
     const n = new V(t);
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = A(C(n, "addOptions", {
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
       name: n.name
-    })), n.storage = A(C(n, "addStorage", {
+    })), n.storage = E(C(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -1626,33 +1626,33 @@ function de(e = {}) {
     "@shikijs/transformers:notation-highlight"
   );
 }
-let E, F;
+let T, F;
 const q = /* @__PURE__ */ new Set(), Q = /* @__PURE__ */ new Set();
 function _n() {
-  return E;
+  return T;
 }
 function zn(e) {
-  if (!E && !F) {
+  if (!T && !F) {
     const t = e.themes.filter(
       (r) => !!r && r in he
     ), n = e.languages.filter(
       (r) => !!r && r in ge
     );
-    return F = rt({
+    return console.log("loadHighlighter langs", n), F = rt({
       themes: t,
       langs: n
     }).then((r) => {
-      E = r;
+      T = r, console.log("loadHighlighter highlighter", T);
     }), F;
   }
   if (F)
     return F;
 }
 async function ve(e) {
-  return E && !E.getLoadedThemes().includes(e) && !Q.has(e) && e in he ? (Q.add(e), await E.loadTheme(e), Q.delete(e), !0) : !1;
+  return T && !T.getLoadedThemes().includes(e) && !Q.has(e) && e in he ? (Q.add(e), await T.loadTheme(e), Q.delete(e), !0) : !1;
 }
 async function Te(e) {
-  return E && !E.getLoadedLanguages().includes(e) && !q.has(e) && e in ge ? (q.add(e), await E.loadLanguage(e), q.delete(e), !0) : !1;
+  return T && !T.getLoadedLanguages().includes(e) && !q.has(e) && e in ge ? (q.add(e), await T.loadLanguage(e), q.delete(e), !0) : !1;
 }
 async function Hn({
   doc: e,
@@ -1667,10 +1667,15 @@ async function Hn({
     ...o.map((a) => a.node.attrs.language),
     r
   ];
-  E ? await Promise.all([
-    ...s.flatMap((a) => ve(a)),
-    ...i.flatMap((a) => !!a && Te(a))
-  ]) : await zn({ languages: i, themes: s });
+  if (console.log("initHighlighter codeBlocks", o), console.log("initHighlighter themes", s), console.log("initHighlighter languages", i), T)
+    console.log("mapping"), await Promise.all([
+      ...s.flatMap((a) => ve(a)),
+      ...i.flatMap((a) => !!a && Te(a))
+    ]);
+  else {
+    const a = zn({ languages: i, themes: s });
+    console.log("initHighlighter loader", a), await a;
+  }
 }
 function ue({
   doc: e,
