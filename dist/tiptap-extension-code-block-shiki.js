@@ -1,4 +1,4 @@
-import { Plugin as $, PluginKey as I, Selection as j, TextSelection as v, NodeSelection as fe, AllSelection as Ee } from "@tiptap/pm/state";
+import { Plugin as I, PluginKey as N, Selection as j, TextSelection as T, NodeSelection as fe, AllSelection as Ee } from "@tiptap/pm/state";
 import { DecorationSet as Oe, Decoration as ne } from "@tiptap/pm/view";
 import "@tiptap/pm/keymap";
 import { Fragment as L, Slice as $e, Node as Ie, Schema as Ne, DOMParser as J } from "@tiptap/pm/model";
@@ -91,10 +91,10 @@ class st {
     return a;
   }
 }
-function C(e, t, n) {
-  return e.config[t] === void 0 && e.parent ? C(e.parent, t, n) : typeof e.config[t] == "function" ? e.config[t].bind({
+function v(e, t, n) {
+  return e.config[t] === void 0 && e.parent ? v(e.parent, t, n) : typeof e.config[t] == "function" ? e.config[t].bind({
     ...n,
-    parent: e.parent ? C(e.parent, t, n) : null
+    parent: e.parent ? v(e.parent, t, n) : null
   }) : e.config[t];
 }
 function it(e) {
@@ -141,7 +141,7 @@ function at(...e) {
 function ct(e) {
   return typeof e == "function";
 }
-function E(e, t = void 0, ...n) {
+function O(e, t = void 0, ...n) {
   return ct(e) ? t ? e.bind(t)(...n) : e(...n) : e;
 }
 function lt(e) {
@@ -164,7 +164,7 @@ function Y(e, t) {
     _(t[o]) && _(e[o]) ? n[o] = Y(e[o], t[o]) : n[o] = t[o];
   }), n;
 }
-class A {
+class E {
   constructor(t = {}) {
     this.type = "extension", this.name = "extension", this.parent = null, this.child = null, this.config = {
       name: this.name,
@@ -172,15 +172,15 @@ class A {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = O(v(this, "addOptions", {
       name: this.name
-    }))), this.storage = E(C(this, "addStorage", {
+    }))), this.storage = O(v(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
   }
   static create(t = {}) {
-    return new A(t);
+    return new E(t);
   }
   configure(t = {}) {
     const n = this.extend({
@@ -190,10 +190,10 @@ class A {
     return n.name = this.name, n.parent = this.parent, n;
   }
   extend(t = {}) {
-    const n = new A({ ...this.config, ...t });
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
+    const n = new E({ ...this.config, ...t });
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = O(v(n, "addOptions", {
       name: n.name
-    })), n.storage = E(C(n, "addStorage", {
+    })), n.storage = O(v(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -222,7 +222,7 @@ function ft(e, t, n) {
 function pt(e) {
   return Object.fromEntries(Object.entries(e.nodes).filter(([, t]) => t.spec.toText).map(([t, n]) => [t, n.spec.toText]));
 }
-A.create({
+E.create({
   name: "clipboardTextSerializer",
   addOptions() {
     return {
@@ -231,8 +231,8 @@ A.create({
   },
   addProseMirrorPlugins() {
     return [
-      new $({
-        key: new I("clipboardTextSerializer"),
+      new I({
+        key: new N("clipboardTextSerializer"),
         props: {
           clipboardTextSerializer: () => {
             const { editor: e } = this, { state: t, schema: n } = e, { doc: o, selection: r } = t, { ranges: s } = r, i = Math.min(...s.map((d) => d.$from.pos)), a = Math.max(...s.map((d) => d.$to.pos)), c = pt(n);
@@ -270,7 +270,7 @@ const mt = () => ({ editor: e, view: t }) => (requestAnimationFrame(() => {
   const { state: r } = n, s = r.doc.slice(e.from, e.to);
   o.deleteRange(e.from, e.to);
   const i = o.mapping.map(t);
-  return o.insert(i, s.content), o.setSelection(new v(o.doc.resolve(Math.max(i - 1, 0)))), !0;
+  return o.insert(i, s.content), o.setSelection(new T(o.doc.resolve(Math.max(i - 1, 0)))), !0;
 }, wt = () => ({ tr: e, dispatch: t }) => {
   const { selection: n } = e, o = n.$anchor.node();
   if (o.content.size > 0)
@@ -344,7 +344,7 @@ const Tt = (e, t = {}) => ({ tr: n, state: o, dispatch: r }) => {
   if (r) {
     const u = xe(c, s, t);
     if (u && u.from <= l && u.to >= d) {
-      const f = v.create(i, u.from, u.to);
+      const f = T.create(i, u.from, u.to);
       n.setSelection(f);
     }
   }
@@ -357,7 +357,7 @@ const Tt = (e, t = {}) => ({ tr: n, state: o, dispatch: r }) => {
   return !1;
 };
 function we(e) {
-  return e instanceof v;
+  return e instanceof T;
 }
 function B(e = 0, t = 0, n = 0) {
   return Math.min(Math.max(e, t), n);
@@ -371,7 +371,7 @@ function Et(e, t = null) {
   if (t === "end")
     return o;
   const r = n.from, s = o.to;
-  return t === "all" ? v.create(e, B(0, r, s), B(e.content.size, r, s)) : v.create(e, B(t, r, s), B(t, r, s));
+  return t === "all" ? T.create(e, B(0, r, s), B(e.content.size, r, s)) : T.create(e, B(t, r, s), B(t, r, s));
 }
 function Ot() {
   return navigator.platform === "Android" || /android/i.test(navigator.userAgent);
@@ -740,7 +740,7 @@ function ie(e, t) {
     name: o.name,
     options: o.options,
     storage: o.storage
-  }, s = E(C(o, "group", r));
+  }, s = O(v(o, "group", r));
   return typeof s != "string" ? !1 : s.split(" ").includes("list");
 }
 function Ce(e, { checkChildren: t = !0, ignoreWhitespace: n = !1 } = {}) {
@@ -822,7 +822,7 @@ const fn = (e, t = {}) => ({ tr: n, state: o, dispatch: r }) => {
   return !0;
 }, gn = (e) => ({ tr: t, dispatch: n }) => {
   if (n) {
-    const { doc: o } = t, { from: r, to: s } = typeof e == "number" ? { from: e, to: e } : e, i = v.atStart(o).from, a = v.atEnd(o).to, c = B(r, i, a), l = B(s, i, a), d = v.create(o, c, l);
+    const { doc: o } = t, { from: r, to: s } = typeof e == "number" ? { from: e, to: e } : e, i = T.atStart(o).from, a = T.atEnd(o).to, c = B(r, i, a), l = B(s, i, a), d = T.create(o, c, l);
     t.setSelection(d);
   }
   return !0;
@@ -856,7 +856,7 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
       attrs: d
     }
   ] : void 0), o) {
-    if (g && (s instanceof v && t.deleteSelection(), t.split(t.mapping.map(a.pos), 1, p), f && !u && !a.parentOffset && a.parent.type !== f)) {
+    if (g && (s instanceof T && t.deleteSelection(), t.split(t.mapping.map(a.pos), 1, p), f && !u && !a.parentOffset && a.parent.type !== f)) {
       const m = t.mapping.map(a.before()), h = t.doc.resolve(m);
       a.node(-1).canReplaceWith(h.index(), h.index() + 1, f) && t.setNodeMarkup(t.mapping.map(a.before()), f);
     }
@@ -878,8 +878,8 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
     if (r) {
       let y = L.empty;
       const w = c.index(-1) ? 1 : c.index(-2) ? 2 : 3;
-      for (let N = c.depth - w; N >= c.depth - 3; N -= 1)
-        y = L.from(c.node(N).copy(y));
+      for (let C = c.depth - w; C >= c.depth - 3; C -= 1)
+        y = L.from(c.node(C).copy(y));
       const M = c.indexAfter(-1) < c.node(-2).childCount ? 1 : c.indexAfter(-2) < c.node(-3).childCount ? 2 : 3, k = {
         ...W(f, c.node().type.name, c.node().attrs),
         ...t
@@ -887,12 +887,12 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
       y = y.append(L.from(a.createAndFill(null, S) || void 0));
       const b = c.before(c.depth - (w - 1));
       n.replace(b, c.after(-M), new $e(y, 4 - w, 0));
-      let O = -1;
-      n.doc.nodesBetween(b, n.doc.content.size, (N, Ae) => {
-        if (O > -1)
+      let $ = -1;
+      n.doc.nodesBetween(b, n.doc.content.size, (C, Ae) => {
+        if ($ > -1)
           return !1;
-        N.isTextblock && N.content.size === 0 && (O = Ae + 1);
-      }), O > -1 && n.setSelection(v.near(n.doc.resolve(O))), n.scrollIntoView();
+        C.isTextblock && C.content.size === 0 && ($ = Ae + 1);
+      }), $ > -1 && n.setSelection(T.near(n.doc.resolve($))), n.scrollIntoView();
     }
     return !0;
   }
@@ -948,8 +948,8 @@ const kn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
       return c().command(() => (s.setNodeMarkup(S.pos, p), !0)).command(() => U(s, p)).command(() => G(s, p)).run();
   }
   return !n || !k || !a ? c().command(() => d().wrapInList(p, o) ? !0 : l.clearNodes()).wrapInList(p, o).command(() => U(s, p)).command(() => G(s, p)).run() : c().command(() => {
-    const b = d().wrapInList(p, o), O = k.filter((N) => f.includes(N.type.name));
-    return s.ensureMarks(O), b ? !0 : l.clearNodes();
+    const b = d().wrapInList(p, o), $ = k.filter((C) => f.includes(C.type.name));
+    return s.ensureMarks($), b ? !0 : l.clearNodes();
   }).wrapInList(p, o).command(() => U(s, p)).command(() => G(s, p)).run();
 }, Sn = (e, t = {}, n = {}) => ({ state: o, commands: r }) => {
   const { extendEmptyMarkRange: s = !1 } = n, i = P(e, o.schema);
@@ -1099,7 +1099,7 @@ var $n = /* @__PURE__ */ Object.freeze({
   wrapIn: En,
   wrapInList: On
 });
-A.create({
+E.create({
   name: "commands",
   addCommands() {
     return {
@@ -1107,12 +1107,12 @@ A.create({
     };
   }
 });
-A.create({
+E.create({
   name: "drop",
   addProseMirrorPlugins() {
     return [
-      new $({
-        key: new I("tiptapDrop"),
+      new I({
+        key: new N("tiptapDrop"),
         props: {
           handleDrop: (e, t, n, o) => {
             this.editor.emit("drop", {
@@ -1127,12 +1127,12 @@ A.create({
     ];
   }
 });
-A.create({
+E.create({
   name: "editable",
   addProseMirrorPlugins() {
     return [
-      new $({
-        key: new I("editable"),
+      new I({
+        key: new N("editable"),
         props: {
           editable: () => this.editor.options.editable
         }
@@ -1140,13 +1140,13 @@ A.create({
     ];
   }
 });
-const In = new I("focusEvents");
-A.create({
+const In = new N("focusEvents");
+E.create({
   name: "focusEvents",
   addProseMirrorPlugins() {
     const { editor: e } = this;
     return [
-      new $({
+      new I({
         key: In,
         props: {
           handleDOMEvents: {
@@ -1166,7 +1166,7 @@ A.create({
     ];
   }
 });
-A.create({
+E.create({
   name: "keymap",
   addKeyboardShortcuts() {
     const e = () => this.editor.commands.first(({ commands: i }) => [
@@ -1220,8 +1220,8 @@ A.create({
       // to a paragraph if necessary.
       // This is an alternative to ProseMirror's `AllSelection`, which doesn’t work well
       // with many other commands.
-      new $({
-        key: new I("clearDocument"),
+      new I({
+        key: new N("clearDocument"),
         appendTransaction: (e, t, n) => {
           if (e.some((m) => m.getMeta("composition")))
             return;
@@ -1245,12 +1245,12 @@ A.create({
     ];
   }
 });
-A.create({
+E.create({
   name: "paste",
   addProseMirrorPlugins() {
     return [
-      new $({
-        key: new I("tiptapPaste"),
+      new I({
+        key: new N("tiptapPaste"),
         props: {
           handlePaste: (e, t, n) => {
             this.editor.emit("paste", {
@@ -1264,12 +1264,12 @@ A.create({
     ];
   }
 });
-A.create({
+E.create({
   name: "tabindex",
   addProseMirrorPlugins() {
     return [
-      new $({
-        key: new I("tabindex"),
+      new I({
+        key: new N("tabindex"),
         props: {
           attributes: () => this.editor.isEditable ? { tabindex: "0" } : {}
         }
@@ -1281,7 +1281,7 @@ function ce(e) {
   return new dt({
     find: e.find,
     handler: ({ state: t, range: n, match: o }) => {
-      const r = t.doc.resolve(n.from), s = E(e.getAttributes, void 0, o) || {};
+      const r = t.doc.resolve(n.from), s = O(e.getAttributes, void 0, o) || {};
       if (!r.node(-1).canReplaceWith(r.index(-1), r.indexAfter(-1), e.type))
         return null;
       t.tr.delete(n.from, n.to).setBlockType(n.from, n.from, e.type, s);
@@ -1296,9 +1296,9 @@ class V {
     }, this.config = {
       ...this.config,
       ...t
-    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = E(C(this, "addOptions", {
+    }, this.name = this.config.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${this.name}".`), this.options = this.config.defaultOptions, this.config.addOptions && (this.options = O(v(this, "addOptions", {
       name: this.name
-    }))), this.storage = E(C(this, "addStorage", {
+    }))), this.storage = O(v(this, "addStorage", {
       name: this.name,
       options: this.options
     })) || {};
@@ -1315,9 +1315,9 @@ class V {
   }
   extend(t = {}) {
     const n = new V(t);
-    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = E(C(n, "addOptions", {
+    return n.parent = this, this.child = n, n.name = t.name ? t.name : n.parent.name, t.defaultOptions && Object.keys(t.defaultOptions).length > 0 && console.warn(`[tiptap warn]: BREAKING CHANGE: "defaultOptions" is deprecated. Please use "addOptions" instead. Found in extension: "${n.name}".`), n.options = O(v(n, "addOptions", {
       name: n.name
-    })), n.storage = E(C(n, "addStorage", {
+    })), n.storage = O(v(n, "addStorage", {
       name: n.name,
       options: n.options
     })), n;
@@ -1433,8 +1433,8 @@ const Nn = /^```([a-z]+)?[\s\n]$/, Pn = /^~~~([a-z]+)?[\s\n]$/, Bn = V.create({
     return [
       // this plugin creates a code block for pasted content from VS Code
       // we can also detect the copied code language
-      new $({
-        key: new I("codeBlockVSCodeHandler"),
+      new I({
+        key: new N("codeBlockVSCodeHandler"),
         props: {
           handlePaste: (e, t) => {
             if (!t.clipboardData || this.editor.isActive(this.type.name))
@@ -1444,7 +1444,7 @@ const Nn = /^```([a-z]+)?[\s\n]$/, Pn = /^~~~([a-z]+)?[\s\n]$/, Bn = V.create({
               return !1;
             const { tr: i, schema: a } = e.state, c = a.text(n.replace(/\r\n?/g, `
 `));
-            return i.replaceSelectionWith(this.type.create({ language: s }, c)), i.selection.$from.parent.type !== this.type && i.setSelection(v.near(i.doc.resolve(Math.max(0, i.selection.from - 2)))), i.setMeta("paste", !0), e.dispatch(i), !0;
+            return i.replaceSelectionWith(this.type.create({ language: s }, c)), i.selection.$from.parent.type !== this.type && i.setSelection(T.near(i.doc.resolve(Math.max(0, i.selection.from - 2)))), i.setMeta("paste", !0), e.dispatch(i), !0;
           }
         }
       })
@@ -1626,13 +1626,13 @@ function q(e = {}) {
     "@shikijs/transformers:notation-highlight"
   );
 }
-let T, F;
+let A, F;
 const Q = /* @__PURE__ */ new Set(), X = /* @__PURE__ */ new Set();
 function zn() {
-  return T;
+  return A;
 }
 function Hn(e) {
-  if (!T && !F) {
+  if (!A && !F) {
     const t = e.themes.filter(
       (o) => !!o && o in he
     ), n = e.languages.filter(
@@ -1642,17 +1642,17 @@ function Hn(e) {
       themes: t,
       langs: n
     }).then((o) => {
-      T = o, console.log("loadHighlighter highlighter", T);
+      A = o, console.log("loadHighlighter highlighter", A);
     }), F;
   }
   if (F)
     return F;
 }
 async function ve(e) {
-  return T && !T.getLoadedThemes().includes(e) && !X.has(e) && e in he ? (X.add(e), await T.loadTheme(e), X.delete(e), !0) : !1;
+  return A && !A.getLoadedThemes().includes(e) && !X.has(e) && e in he ? (X.add(e), await A.loadTheme(e), X.delete(e), !0) : !1;
 }
 async function Te(e) {
-  return T && !T.getLoadedLanguages().includes(e) && !Q.has(e) && e in ge ? (Q.add(e), await T.loadLanguage(e), Q.delete(e), !0) : !1;
+  return A && !A.getLoadedLanguages().includes(e) && !Q.has(e) && e in ge ? (Q.add(e), await A.loadLanguage(e), Q.delete(e), !0) : !1;
 }
 async function Wn({
   doc: e,
@@ -1674,7 +1674,7 @@ async function Wn({
     "css",
     "html"
   ];
-  if (console.log("initHighlighter codeBlocks", r), console.log("initHighlighter themes", s), console.log("initHighlighter languages", i), T)
+  if (console.log("initHighlighter codeBlocks", r), console.log("initHighlighter themes", s), console.log("initHighlighter languages", i), A)
     console.log("mapping"), await Promise.all([
       ...s.flatMap((a) => ve(a)),
       ...i.flatMap((a) => !!a && Te(a))
@@ -1732,14 +1732,15 @@ function ue({
       if ((w = k.children) != null && w.length) {
         let S = g;
         console.log("linechildren", k.children), (M = k.children) == null || M.forEach((b) => {
-          const O = b.children[0].value.length;
+          var C;
+          const $ = b.children[0].value.length;
           console.log("nodeprops", b.properties), r.push(
-            ne.inline(
-              S,
-              S + O,
-              b.properties
-            )
-          ), S += O;
+            ne.inline(S, S + $, {
+              ...b.properties,
+              // @ts-expect-error line type
+              class: (C = m.properties) == null ? void 0 : C.class.join(" ")
+            })
+          ), S += $;
         }), console.log("did the thing", r), g = S;
       } else k.type === "text" && (g += k.value.length);
   }), console.log("decorationssssss", r), r = r.filter((i) => !!i), Oe.create(e, r);
@@ -1749,8 +1750,8 @@ function Kn({
   defaultLanguage: t,
   defaultTheme: n
 }) {
-  const o = new $({
-    key: new I("shiki"),
+  const o = new I({
+    key: new N("shiki"),
     view(r) {
       class s {
         constructor() {

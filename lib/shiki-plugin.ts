@@ -92,11 +92,11 @@ function getDecorations({
           const nodeLen = node.children[0].value.length
           console.log('nodeprops', node.properties)
           decorations.push(
-            Decoration.inline(
-              lineFrom,
-              lineFrom + nodeLen,
-              (node as Element).properties as DecorationAttrs,
-            ),
+            Decoration.inline(lineFrom, lineFrom + nodeLen, {
+              ...((node as Element).properties as DecorationAttrs),
+              // @ts-expect-error line type
+              class: lines.properties?.class.join(' '),
+            }),
           )
           lineFrom += nodeLen
         })
