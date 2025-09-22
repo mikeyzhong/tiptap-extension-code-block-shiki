@@ -1,7 +1,7 @@
 import { Plugin as I, PluginKey as N, Selection as j, TextSelection as T, NodeSelection as me, AllSelection as Oe } from "@tiptap/pm/state";
 import { DecorationSet as $e, Decoration as re } from "@tiptap/pm/view";
 import "@tiptap/pm/keymap";
-import { Fragment as L, Slice as Ie, Node as Ne, Schema as Pe, DOMParser as U } from "@tiptap/pm/model";
+import { Fragment as F, Slice as Ie, Node as Ne, Schema as Pe, DOMParser as U } from "@tiptap/pm/model";
 import { canSplit as W, joinPoint as he, liftTarget as Be, canJoin as ge, ReplaceStep as je, ReplaceAroundStep as Le } from "@tiptap/pm/transform";
 import { wrapIn as Fe, setBlockType as se, selectTextblockStart as Re, selectTextblockEnd as De, selectParentNode as _e, selectNodeForward as ze, selectNodeBackward as He, newlineInCode as We, liftEmptyBlock as Ke, lift as Ve, joinUp as Je, joinTextblockForward as Ue, joinTextblockBackward as Ge, joinForward as qe, joinDown as Qe, joinBackward as Xe, exitCode as Ye, deleteSelection as Ze, createParagraphNear as et } from "@tiptap/pm/commands";
 import { wrapInList as tt, sinkListItem as nt, liftListItem as ot } from "@tiptap/pm/schema-list";
@@ -296,10 +296,10 @@ const ht = () => ({ editor: e, view: t }) => (requestAnimationFrame(() => {
       return !0;
     }
   return !1;
-}, bt = (e) => ({ tr: t, dispatch: n }) => {
+}, Ct = (e) => ({ tr: t, dispatch: n }) => {
   const { from: o, to: r } = e;
   return n && t.delete(o, r), !0;
-}, Ct = () => ({ state: e, dispatch: t }) => Ze(e, t), vt = () => ({ commands: e }) => e.keyboardShortcut("Enter"), Tt = () => ({ state: e, dispatch: t }) => Ye(e, t);
+}, bt = () => ({ state: e, dispatch: t }) => Ze(e, t), vt = () => ({ commands: e }) => e.keyboardShortcut("Enter"), Tt = () => ({ state: e, dispatch: t }) => Ye(e, t);
 function V(e, t, n = { strict: !0 }) {
   const o = Object.keys(t);
   return o.length ? o.every((r) => n.strict ? t[r] === e[r] : dt(t[r]) ? t[r].test(e[r]) : t[r] === e[r]) : !0;
@@ -402,20 +402,20 @@ const It = (e = null, t = {}) => ({ editor: n, view: o, tr: r, dispatch: s }) =>
     return i(), !0;
   const a = Ot(r.doc, e) || n.state.selection, c = n.state.selection.eq(a);
   return s && (c || r.setSelection(a), c && r.storedMarks && r.setStoredMarks(r.storedMarks), i()), !0;
-}, Nt = (e, t) => (n) => e.every((o, r) => t(o, { ...n, index: r })), Pt = (e, t) => ({ tr: n, commands: o }) => o.insertContentAt({ from: n.selection.from, to: n.selection.to }, e, t), be = (e) => {
+}, Nt = (e, t) => (n) => e.every((o, r) => t(o, { ...n, index: r })), Pt = (e, t) => ({ tr: n, commands: o }) => o.insertContentAt({ from: n.selection.from, to: n.selection.to }, e, t), Ce = (e) => {
   const t = e.childNodes;
   for (let n = t.length - 1; n >= 0; n -= 1) {
     const o = t[n];
-    o.nodeType === 3 && o.nodeValue && /^(\n\s\s|\n)$/.test(o.nodeValue) ? e.removeChild(o) : o.nodeType === 1 && be(o);
+    o.nodeType === 3 && o.nodeValue && /^(\n\s\s|\n)$/.test(o.nodeValue) ? e.removeChild(o) : o.nodeType === 1 && Ce(o);
   }
   return e;
 };
 function H(e) {
   const t = `<body>${e}</body>`, n = new window.DOMParser().parseFromString(t, "text/html").body;
-  return be(n);
+  return Ce(n);
 }
-function D(e, t, n) {
-  if (e instanceof Ne || e instanceof L)
+function _(e, t, n) {
+  if (e instanceof Ne || e instanceof F)
     return e;
   n = {
     slice: !0,
@@ -426,13 +426,13 @@ function D(e, t, n) {
   if (o)
     try {
       if (Array.isArray(e) && e.length > 0)
-        return L.fromArray(e.map((a) => t.nodeFromJSON(a)));
+        return F.fromArray(e.map((a) => t.nodeFromJSON(a)));
       const i = t.nodeFromJSON(e);
       return n.errorOnInvalidContent && i.check(), i;
     } catch (s) {
       if (n.errorOnInvalidContent)
         throw new Error("[tiptap error]: Invalid JSON content", { cause: s });
-      return console.warn("[tiptap warn]: Invalid content.", "Passed value:", e, "Error:", s), D("", t, n);
+      return console.warn("[tiptap warn]: Invalid content.", "Passed value:", e, "Error:", s), _("", t, n);
     }
   if (r) {
     if (n.errorOnInvalidContent) {
@@ -461,7 +461,7 @@ function D(e, t, n) {
     const s = U.fromSchema(t);
     return n.slice ? s.parseSlice(H(e), n.parseOptions).content : s.parse(H(e), n.parseOptions);
   }
-  return D("", t, n);
+  return _("", t, n);
 }
 function Bt(e, t, n) {
   const o = e.steps.length - 1;
@@ -501,7 +501,7 @@ const jt = (e) => !("type" in e), Lt = (e, t, n) => ({ tr: o, dispatch: r, edito
     };
     if (!n.errorOnInvalidContent && !s.options.enableContentCheck && s.options.emitContentError)
       try {
-        D(t, s.schema, {
+        _(t, s.schema, {
           parseOptions: l,
           errorOnInvalidContent: !0
         });
@@ -509,7 +509,7 @@ const jt = (e) => !("type" in e), Lt = (e, t, n) => ({ tr: o, dispatch: r, edito
         c(h);
       }
     try {
-      a = D(t, s.schema, {
+      a = _(t, s.schema, {
         parseOptions: l,
         errorOnInvalidContent: (i = n.errorOnInvalidContent) !== null && i !== void 0 ? i : s.options.enableContentCheck
       });
@@ -527,7 +527,7 @@ const jt = (e) => !("type" in e), Lt = (e, t, n) => ({ tr: o, dispatch: r, edito
     if (f) {
       if (Array.isArray(t))
         m = t.map((h) => h.text || "").join("");
-      else if (t instanceof L) {
+      else if (t instanceof F) {
         let h = "";
         t.forEach((y) => {
           y.text && (h += y.text);
@@ -554,7 +554,7 @@ const jt = (e) => !("type" in e), Lt = (e, t, n) => ({ tr: o, dispatch: r, edito
     return !1;
   }
 }, Wt = () => ({ state: e, dispatch: t }) => Ge(e, t), Kt = () => ({ state: e, dispatch: t }) => Ue(e, t);
-function Ce() {
+function be() {
   return typeof navigator < "u" ? /Mac/.test(navigator.platform) : !1;
 }
 function Vt(e) {
@@ -573,7 +573,7 @@ function Vt(e) {
     else if (/^s(hift)?$/i.test(c))
       s = !0;
     else if (/^mod$/i.test(c))
-      ee() || Ce() ? i = !0 : r = !0;
+      ee() || be() ? i = !0 : r = !0;
     else
       throw new Error(`Unrecognized modifier name: ${c}`);
   }
@@ -643,7 +643,7 @@ const Xt = (e, t) => ({ tr: n, state: o, dispatch: r }) => {
   return !0;
 }, en = () => ({ state: e, dispatch: t }) => He(e, t), tn = () => ({ state: e, dispatch: t }) => ze(e, t), nn = () => ({ state: e, dispatch: t }) => _e(e, t), on = () => ({ state: e, dispatch: t }) => De(e, t), rn = () => ({ state: e, dispatch: t }) => Re(e, t);
 function sn(e, t, n = {}, o = {}) {
-  return D(e, t, {
+  return _(e, t, {
     slice: !1,
     parseOptions: n,
     errorOnInvalidContent: o.errorOnInvalidContent
@@ -679,7 +679,7 @@ function ln(e) {
   }
   return null;
 }
-function R(e, t) {
+function D(e, t) {
   const n = [];
   return e.descendants((o, r) => {
     t(o) && n.push({
@@ -876,22 +876,22 @@ const xn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
     if (c.depth === 2 || c.node(-3).type !== a || c.index(-2) !== c.node(-2).childCount - 1)
       return !1;
     if (r) {
-      let y = L.empty;
+      let y = F.empty;
       const w = c.index(-1) ? 1 : c.index(-2) ? 2 : 3;
-      for (let C = c.depth - w; C >= c.depth - 3; C -= 1)
-        y = L.from(c.node(C).copy(y));
+      for (let b = c.depth - w; b >= c.depth - 3; b -= 1)
+        y = F.from(c.node(b).copy(y));
       const M = c.indexAfter(-1) < c.node(-2).childCount ? 1 : c.indexAfter(-2) < c.node(-3).childCount ? 2 : 3, k = {
         ...K(f, c.node().type.name, c.node().attrs),
         ...t
       }, S = ((i = a.contentMatch.defaultType) === null || i === void 0 ? void 0 : i.createAndFill(k)) || void 0;
-      y = y.append(L.from(a.createAndFill(null, S) || void 0));
-      const b = c.before(c.depth - (w - 1));
-      n.replace(b, c.after(-M), new Ie(y, 4 - w, 0));
+      y = y.append(F.from(a.createAndFill(null, S) || void 0));
+      const C = c.before(c.depth - (w - 1));
+      n.replace(C, c.after(-M), new Ie(y, 4 - w, 0));
       let $ = -1;
-      n.doc.nodesBetween(b, n.doc.content.size, (C, _) => {
+      n.doc.nodesBetween(C, n.doc.content.size, (b, L) => {
         if ($ > -1)
           return !1;
-        C.isTextblock && C.content.size === 0 && ($ = _ + 1);
+        b.isTextblock && b.content.size === 0 && ($ = L + 1);
       }), $ > -1 && n.setSelection(T.near(n.doc.resolve($))), n.scrollIntoView();
     }
     return !0;
@@ -914,7 +914,7 @@ const xn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
     const { selection: y, storedMarks: w } = o, { splittableMarks: M } = s.extensionManager, k = w || y.$to.parentOffset && y.$from.marks();
     if (n.split(c.pos, 2, h).scrollIntoView(), !k || !r)
       return !0;
-    const S = k.filter((b) => M.includes(b.type.name));
+    const S = k.filter((C) => M.includes(C.type.name));
     n.ensureMarks(S);
   }
   return !0;
@@ -940,7 +940,7 @@ const xn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
   const { extensions: u, splittableMarks: f } = r.extensionManager, p = x(e, i.schema), g = x(t, i.schema), { selection: m, storedMarks: h } = i, { $from: y, $to: w } = m, M = y.blockRange(w), k = h || m.$to.parentOffset && m.$from.marks();
   if (!M)
     return !1;
-  const S = ne((b) => ce(b.type.name, u))(m);
+  const S = ne((C) => ce(C.type.name, u))(m);
   if (M.depth >= 1 && S && M.depth - S.depth <= 1) {
     if (S.node.type === p)
       return l.liftListItem(g);
@@ -948,17 +948,17 @@ const xn = ({ keepMarks: e = !0 } = {}) => ({ tr: t, state: n, dispatch: o, edit
       return c().command(() => (s.setNodeMarkup(S.pos, p), !0)).command(() => G(s, p)).command(() => q(s, p)).run();
   }
   return !n || !k || !a ? c().command(() => d().wrapInList(p, o) ? !0 : l.clearNodes()).wrapInList(p, o).command(() => G(s, p)).command(() => q(s, p)).run() : c().command(() => {
-    const b = d().wrapInList(p, o), $ = k.filter((C) => f.includes(C.type.name));
-    return s.ensureMarks($), b ? !0 : l.clearNodes();
+    const C = d().wrapInList(p, o), $ = k.filter((b) => f.includes(b.type.name));
+    return s.ensureMarks($), C ? !0 : l.clearNodes();
   }).wrapInList(p, o).command(() => G(s, p)).command(() => q(s, p)).run();
 }, Mn = (e, t = {}, n = {}) => ({ state: o, commands: r }) => {
   const { extendEmptyMarkRange: s = !1 } = n, i = P(e, o.schema);
   return un(o, i, t) ? r.unsetMark(i, { extendEmptyMarkRange: s }) : r.setMark(i, t);
-}, bn = (e, t, n = {}) => ({ state: o, commands: r }) => {
+}, Cn = (e, t, n = {}) => ({ state: o, commands: r }) => {
   const s = x(e, o.schema), i = x(t, o.schema), a = te(o, s, n);
   let c;
   return o.selection.$anchor.sameParent(o.selection.$head) && (c = o.selection.$anchor.parent.attrs), a ? r.setNode(i, c) : r.setNode(s, { ...c, ...n });
-}, Cn = (e, t = {}) => ({ state: n, commands: o }) => {
+}, bn = (e, t = {}) => ({ state: n, commands: o }) => {
   const r = x(e, n.schema);
   return te(n, r, t) ? o.lift(r) : o.wrapIn(r, t);
 }, vn = () => ({ state: e, dispatch: t }) => {
@@ -1048,8 +1048,8 @@ var In = /* @__PURE__ */ Object.freeze({
   cut: wt,
   deleteCurrentNode: St,
   deleteNode: Mt,
-  deleteRange: bt,
-  deleteSelection: Ct,
+  deleteRange: Ct,
+  deleteSelection: bt,
   enter: vt,
   exitCode: Tt,
   extendMarkRange: At,
@@ -1090,8 +1090,8 @@ var In = /* @__PURE__ */ Object.freeze({
   splitListItem: wn,
   toggleList: Sn,
   toggleMark: Mn,
-  toggleNode: bn,
-  toggleWrap: Cn,
+  toggleNode: Cn,
+  toggleWrap: bn,
   undoInputRule: vn,
   unsetAllMarks: Tn,
   unsetMark: An,
@@ -1211,7 +1211,7 @@ E.create({
       "Ctrl-a": () => this.editor.commands.selectTextblockStart(),
       "Ctrl-e": () => this.editor.commands.selectTextblockEnd()
     };
-    return ee() || Ce() ? s : r;
+    return ee() || be() ? s : r;
   },
   addProseMirrorPlugins() {
     return [
@@ -1626,27 +1626,27 @@ function Q(e = {}) {
     "@shikijs/transformers:notation-highlight"
   );
 }
-let A, F;
+let A, R;
 const X = /* @__PURE__ */ new Set(), Y = /* @__PURE__ */ new Set();
 function Hn() {
   return A;
 }
 function Wn(e) {
-  if (!A && !F) {
+  if (!A && !R) {
     const t = e.themes.filter(
       (o) => !!o && o in ye
     ), n = e.languages.filter(
       (o) => !!o && o in ke
     );
-    return console.log("loadHighlighter langs", n), F = rt({
+    return console.log("loadHighlighter langs", n), R = rt({
       themes: t,
       langs: n
     }).then((o) => {
       A = o, console.log("loadHighlighter highlighter", A);
-    }), F;
+    }), R;
   }
-  if (F)
-    return F;
+  if (R)
+    return R;
 }
 async function Ae(e) {
   return A && !A.getLoadedThemes().includes(e) && !Y.has(e) && e in ye ? (Y.add(e), await A.loadTheme(e), Y.delete(e), !0) : !1;
@@ -1660,7 +1660,7 @@ async function Kn({
   defaultTheme: n,
   defaultLanguage: o
 }) {
-  const r = R(e, (a) => a.type.name === t), s = [
+  const r = D(e, (a) => a.type.name === t), s = [
     ...r.map((a) => a.node.attrs.theme),
     n
   ], i = [
@@ -1691,7 +1691,7 @@ function pe({
   defaultLanguage: o
 }) {
   let r = [];
-  const s = R(e, (i) => i.type.name === t);
+  const s = D(e, (i) => i.type.name === t);
   return console.log("children", s), s.forEach((i) => {
     var h, y, w, M;
     let a = i.node.attrs.language || o, c = i.node.attrs.theme || n;
@@ -1731,16 +1731,18 @@ function pe({
     for (const k of m)
       if ((w = k.children) != null && w.length) {
         let S = g;
-        console.log("linechildren", k.children), (M = k.children) == null || M.forEach((b) => {
-          var _, oe;
-          const $ = b.children[0].value.length;
-          console.log("nodeprops", b.properties);
-          const C = {
-            ...b.properties
+        console.log("linechildren", k.children), (M = k.children) == null || M.forEach((C) => {
+          var oe;
+          const $ = C.children[0].value.length;
+          console.log("nodeprops", C.properties);
+          const b = {
+            ...C.properties
           };
-          console.log("line.propertiesssss css", k.properties), console.log("line.propertiesssss css", k.properties.class), (_ = k.properties) != null && _.class && (C.class = (oe = k.properties) == null ? void 0 : oe.class.join(" ")), r.push(
+          console.log("line.propertiesssss css", k.properties), console.log("line.propertiesssss css", k.properties.class);
+          const L = (oe = k.properties) == null ? void 0 : oe.class;
+          L && (Array.isArray(L) ? b.class = L.join(" ") : b.class = L), r.push(
             re.inline(S, S + $, {
-              ...C
+              ...b
             })
           ), S += $;
         }), console.log("did the thing", r), g = S;
@@ -1774,7 +1776,7 @@ function Vn({
         // When new codeblocks were added and they have missing themes or
         // languages, load those and then add code decorations once again.
         async checkUndecoratedBlocks() {
-          const a = R(
+          const a = D(
             r.state.doc,
             (d) => d.type.name === e
           );
@@ -1799,10 +1801,10 @@ function Vn({
         defaultTheme: n
       })),
       apply: (r, s, i, a) => {
-        const c = i.selection.$head.parent.type.name, l = a.selection.$head.parent.type.name, d = R(
+        const c = i.selection.$head.parent.type.name, l = a.selection.$head.parent.type.name, d = D(
           i.doc,
           (p) => p.type.name === e
-        ), u = R(
+        ), u = D(
           a.doc,
           (p) => p.type.name === e
         );

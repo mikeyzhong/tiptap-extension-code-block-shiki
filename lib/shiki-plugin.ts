@@ -99,9 +99,13 @@ function getDecorations({
           // @ts-expect-error line type
           console.log('line.propertiesssss css', line.properties.class)
           // @ts-expect-error line type
-          if (line.properties?.class) {
-            // @ts-expect-error line type
-            attrs.class = line.properties?.class.join(' ')
+          const lineClass = line.properties?.class
+          if (lineClass) {
+            if (Array.isArray(lineClass)) {
+              attrs.class = lineClass.join(' ')
+            } else {
+              attrs.class = lineClass
+            }
           }
           decorations.push(
             Decoration.inline(lineFrom, lineFrom + nodeLen, {
