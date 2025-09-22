@@ -1731,18 +1731,18 @@ function ue({
     for (const k of m)
       if ((w = k.children) != null && w.length) {
         let S = g;
-        (M = k.children) == null || M.forEach((b) => {
+        console.log("linechildren", k.children), (M = k.children) == null || M.forEach((b) => {
           const O = b.children[0].value.length;
-          r.push(
+          console.log("nodeprops", b.properties), r.push(
             ne.inline(
               S,
               S + O,
               b.properties
             )
           ), S += O;
-        }), g = S;
+        }), console.log("did the thing", r), g = S;
       } else k.type === "text" && (g += k.value.length);
-  }), console.log("decorations", r), r = r.filter((i) => !!i), Oe.create(e, r);
+  }), console.log("decorationssssss", r), r = r.filter((i) => !!i), Oe.create(e, r);
 }
 function Kn({
   name: e,

@@ -86,9 +86,11 @@ function getDecorations({
     for (const line of lines) {
       if ((line as Element).children?.length) {
         let lineFrom = from
+        console.log('linechildren', (line as Element).children)
         // @ts-expect-error line type
         line.children?.forEach((node) => {
           const nodeLen = node.children[0].value.length
+          console.log('nodeprops', node.properties)
           decorations.push(
             Decoration.inline(
               lineFrom,
@@ -98,6 +100,7 @@ function getDecorations({
           )
           lineFrom += nodeLen
         })
+        console.log('did the thing', decorations)
 
         // prosemirror do not support add wrap for line
         // decorations.push(Decoration.inline(from, lineFrom, line.properties as DecorationAttrs))
@@ -108,7 +111,7 @@ function getDecorations({
     }
   })
 
-  console.log('decorations', decorations)
+  console.log('decorationssssss', decorations)
 
   decorations = decorations.filter((item) => !!item)
 
