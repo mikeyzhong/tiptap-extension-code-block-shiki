@@ -1738,7 +1738,7 @@ function ue({
             ne.inline(S, S + $, {
               ...b.properties,
               // @ts-expect-error line type
-              class: (C = m.properties) == null ? void 0 : C.class.join(" ")
+              class: (C = k.properties) == null ? void 0 : C.class.join(" ")
             })
           ), S += $;
         }), console.log("did the thing", r), g = S;

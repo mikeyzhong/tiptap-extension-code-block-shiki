@@ -95,7 +95,7 @@ function getDecorations({
             Decoration.inline(lineFrom, lineFrom + nodeLen, {
               ...((node as Element).properties as DecorationAttrs),
               // @ts-expect-error line type
-              class: lines.properties?.class.join(' '),
+              class: line.properties?.class.join(' '),
             }),
           )
           lineFrom += nodeLen
