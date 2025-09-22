@@ -62,13 +62,13 @@ function getDecorations({
       })
     console.log('bagel')
     const result = highlighter!.codeToHast(block.node.textContent, {
-      theme: themeResolved,
+      theme: themeResolved.name,
       lang: block.node.attrs.language,
       transformers: [transformerNotationHighlight()],
     })
     console.log('result codeToHast', result)
     const preNode = highlighter!.codeToHast(block.node.textContent, {
-      theme: themeResolved,
+      theme: themeResolved.name,
       lang: 'javascript',
       transformers: [transformerNotationHighlight()],
     }).children[0] as Element

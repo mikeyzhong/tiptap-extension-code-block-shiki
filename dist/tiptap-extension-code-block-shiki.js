@@ -1702,13 +1702,13 @@ function ue({
       console.error("cooooode to hast error", k);
     }), console.log("bagel");
     const f = l.codeToHast(i.node.textContent, {
-      theme: u,
+      theme: u.name,
       lang: i.node.attrs.language,
       transformers: [q()]
     });
     console.log("result codeToHast", f);
     const p = l.codeToHast(i.node.textContent, {
-      theme: u,
+      theme: u.name,
       lang: "javascript",
       transformers: [q()]
     }).children[0];
