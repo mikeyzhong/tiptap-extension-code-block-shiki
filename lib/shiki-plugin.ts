@@ -95,6 +95,8 @@ function getDecorations({
             ...((node as Element).properties as DecorationAttrs),
           }
           // @ts-expect-error line type
+          console.log('line.propertiesssss css', line.properties)
+          // @ts-expect-error line type
           console.log('line.propertiesssss css', line.properties.class)
           // @ts-expect-error line type
           if (line.properties?.class) {

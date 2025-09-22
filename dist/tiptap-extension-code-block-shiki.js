@@ -1738,7 +1738,7 @@ function pe({
           const C = {
             ...b.properties
           };
-          console.log("line.propertiesssss css", k.properties.class), (_ = k.properties) != null && _.class && (C.class = (oe = k.properties) == null ? void 0 : oe.class.join(" ")), r.push(
+          console.log("line.propertiesssss css", k.properties), console.log("line.propertiesssss css", k.properties.class), (_ = k.properties) != null && _.class && (C.class = (oe = k.properties) == null ? void 0 : oe.class.join(" ")), r.push(
             re.inline(S, S + $, {
               ...C
             })
