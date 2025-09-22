@@ -5,7 +5,7 @@ import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
 import type { DecorationAttrs } from '@tiptap/pm/view'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
 import type { Element } from 'hast'
-import { BundledLanguage, BundledTheme } from 'shiki'
+import { BundledLanguage, BundledTheme, codeToHast } from 'shiki'
 import {
   getShiki,
   initHighlighter,
@@ -47,6 +47,14 @@ function getDecorations({
     const themeResolved = highlighter.getTheme(themeToApply)
 
     console.log('block.node.textContent', block.node.textContent)
+    console.log(
+      'cooooode to hast',
+      codeToHast(block.node.textContent, {
+        theme: themeResolved,
+        lang: block.node.attrs.language,
+        transformers: [transformerNotationHighlight()],
+      }),
+    )
     const result = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
       lang: block.node.attrs.language,
