@@ -54,6 +54,8 @@ function getDecorations({
     })
       .then((hast) => {
         console.log('cooooode to hast', hast)
+        console.log('lang', block.node.attrs.language)
+        console.log('theme', themeResolved)
       })
       .catch((e) => {
         console.error('cooooode to hast error', e)
