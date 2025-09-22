@@ -55,6 +55,7 @@ function getDecorations({
         transformers: [transformerNotationHighlight()],
       }),
     )
+    console.log('bagel')
     const result = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
       lang: block.node.attrs.language,
