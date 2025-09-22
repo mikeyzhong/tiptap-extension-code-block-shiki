@@ -47,6 +47,12 @@ function getDecorations({
     const themeResolved = highlighter.getTheme(themeToApply)
 
     console.log('block.node.textContent', block.node.textContent)
+    const result = highlighter!.codeToHast(block.node.textContent, {
+      theme: themeResolved,
+      lang: block.node.attrs.language,
+      transformers: [transformerNotationHighlight()],
+    })
+    console.log('result codeToHast', result)
     const preNode = highlighter!.codeToHast(block.node.textContent, {
       theme: themeResolved,
       lang: block.node.attrs.language,
