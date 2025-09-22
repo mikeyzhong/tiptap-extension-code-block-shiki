@@ -91,13 +91,19 @@ function getDecorations({
         line.children?.forEach((node) => {
           const nodeLen = node.children[0].value.length
           console.log('nodeprops', node.properties)
+          const attrs = { ...((node as Element).properties as DecorationAttrs) }
+          const raw = (line as Element).properties?.class
+          const classStr = Array.isArray(raw)
+            ? raw.filter((c): c is string => typeof c === 'string').join(' ')
+            : typeof raw === 'string'
+              ? raw
+              : undefined
+          if (classStr) attrs.class = classStr
+
           decorations.push(
-            Decoration.inline(lineFrom, lineFrom + nodeLen, {
-              ...((node as Element).properties as DecorationAttrs),
-              // @ts-expect-error line type
-              class: line.properties?.class.join(' '),
-            }),
+            Decoration.inline(lineFrom, lineFrom + nodeLen, attrs),
           )
+
           lineFrom += nodeLen
         })
         console.log('did the thing', decorations)
